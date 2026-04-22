@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réservation Bus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 text-center text-2xl font-bold">
+    Réservation de Billets de Bus
+  </header>
+
+  <div class="container mx-auto p-4">
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Formulaire -->
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <h2 class="text-xl font-semibold mb-4">Réserver un billet</h2>
+
+        <form id="bookingForm" class="space-y-4">
+          
+          <div>
+            <label class="block">Ville de départ</label>
+            <select id="from" class="w-full p-2 border rounded">
+              <option value="">Choisir</option>
+              <option value="Fès">Fès</option>
+              <option value="Rabat">Rabat</option>
+              <option value="Casablanca">Casablanca</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block">Destination</label>
+            <select id="to" class="w-full p-2 border rounded">
+              <option value="">Choisir</option>
+              <option value="Marrakech">Marrakech</option>
+              <option value="Tanger">Tanger</option>
+              <option value="Agadir">Agadir</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block">Date</label>
+            <input type="date" id="date" class="w-full p-2 border rounded">
+          </div>
+
+          <div>
+            <label class="block">Nombre de billets</label>
+            <input type="number" id="tickets" min="1" value="1" class="w-full p-2 border rounded">
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+            Réserver
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Résumé -->
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <h2 class="text-xl font-semibold mb-4">Résumé</h2>
+
+        <div id="summary" class="space-y-2 text-gray-700">
+          <p>Aucune réservation pour le moment</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const form = document.getElementById("bookingForm");
+    const summary = document.getElementById("summary");
+
+    // Prix simulés
+    const prices = {
+      "Fès-Marrakech": 120,
+      "Fès-Tanger": 90,
+      "Fès-Agadir": 200,
+      "Rabat-Marrakech": 100,
+      "Rabat-Tanger": 80,
+      "Rabat-Agadir": 180,
+      "Casablanca-Marrakech": 70,
+      "Casablanca-Tanger": 110,
+      "Casablanca-Agadir": 150
+    };
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const date = document.getElementById("date").value;
+      const tickets = document.getElementById("tickets").value;
+
+      if (!from || !to || !date) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+      }
+
+      const route = `${from}-${to}`;
+      const pricePerTicket = prices[route] || 100;
+      const total = pricePerTicket * tickets;
+
+      summary.innerHTML = `
+        <p><strong>Départ :</strong> ${from}</p>
+        <p><strong>Destination :</strong> ${to}</p>
+        <p><strong>Date :</strong> ${date}</p>
+        <p><strong>Billets :</strong> ${tickets}</p>
+        <p><strong>Prix unitaire :</strong> ${pricePerTicket} MAD</p>
+        <p class="text-lg font-bold text-blue-600">Total : ${total} MAD</p>
+      `;
+    });
+  </script>
+
+</body>
+</html>
